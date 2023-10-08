@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "element-plus": "^2.3.14",
-    "element-ui": "^2.15.14",
     "vue": "^3.3.4",
     "vue-lodash": "^2.0.2",
-    "vue-stash": "^2.0.1-beta",
-    "vuedraggable": "^2.20.0"
+    "vuedraggable": "^2.20.0",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.4",
+    "css-loader": "^2.1.1",
     "vite": "^4.4.9"
   }
 }
