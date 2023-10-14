@@ -53,20 +53,20 @@
                       :sort="true"
                       ghost-class="sortable__ghost"
                     >
-                      <template #item="{ field, index }">
+                      <template #item="{ element, index }">
                         <el-col
                           class="form__group"
-                          v-bind="field"
+                          v-bind="element"
                           :span="12"
-                          :class="{ 'is--active': field === activeField }"
+                          :class="{ 'is--active': element === activeField }"
                         >
                           <span class="form__selectedlabel">{{
-                            field.fieldType
+                            element.fieldType
                           }}</span>
-                          <div @click="editElementProperties(field)">
+                          <div @click="editElementProperties(element)">
                             <component
-                              :is="field.fieldType"
-                              :currentField="field"
+                              :is="element.fieldType"
+                              :currentField="element"
                               class="form__field"
                             ></component>
                           </div>
@@ -77,14 +77,30 @@
                               icon="el-icon-rank"
                               class="form__actionitem--move"
                             ></el-button>
+                            <el-button-group class="ml-4">
+                              <el-button type="primary" round> Edit</el-button>
+                              <el-button
+                                type="primary"
+                                round
+                                @click="
+                                  deleteElement(index, eachFormObj.fields)
+                                "
+                                >Delete</el-button
+                              >
+                            </el-button-group>
+
                             <el-button-group class="form__actionlist">
                               <el-button
                                 size="mini"
                                 icon="el-icon-plus"
                                 @click="
-                                  cloneElement(index, field, eachFormObj.fields)
+                                  cloneElement(
+                                    index,
+                                    element,
+                                    eachFormObj.fields
+                                  )
                                 "
-                                v-show="!field.isUnique"
+                                v-show="!element.isUnique"
                               ></el-button>
                               <el-button
                                 size="mini"
@@ -123,7 +139,6 @@
 
 <script>
 import { FormBuilder } from "@/components/form_elements/formbuilder";
-
 export default {
   name: "Home",
   data() {
@@ -154,7 +169,7 @@ export default {
   components: FormBuilder.components,
   methods: {
     deleteElement(index, form) {
-      FormBuilder.methods.deleteElement(index, form);
+      this.$store.commit("deleteFormElement", { form, index });
     },
     cloneElement(index, field, form) {
       FormBuilder.methods.cloneElement(index, field, form);
@@ -188,6 +203,99 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Your styles here */
+<style>
+.empty-section {
+  text-align: center;
+  font-size: 40px;
+  background: linear-gradient(to bottom, #fff, #409eff);
+  -webkit-text-fill-color: transparent;
+}
+
+.dragArea {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  min-height: 10px;
+  height: calc(30vh);
+  z-index: 2;
+}
+
+.el-main-left {
+  height: calc(90vh);
+}
+
+.form__selectedlabel {
+  display: none;
+  background: #ecf5ff;
+  padding: 3px 5px;
+  color: black;
+  font-size: 10px;
+  position: absolute;
+  top: -17px;
+  right: 15px;
+}
+
+.form__actionitem--move {
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  visibility: hidden;
+
+  &:active,
+  &:focus,
+  &:hover {
+    border-color: #409eff;
+    background: #ecf5ff;
+  }
+}
+
+.form__actionlist {
+  position: absolute;
+  margin-top: 10px;
+  visibility: hidden;
+  z-index: 3;
+  right: 0;
+  border-radius: 2px;
+}
+
+.form__group {
+  margin-bottom: 25px;
+  border: 1px solid transparent;
+  position: relative;
+
+  &:hover {
+    border-color: #409eff;
+
+    .form__actionitem--move {
+      visibility: visible;
+    }
+  }
+
+  &.is--active {
+    border-color: #409eff;
+    background: #ecf5ff;
+
+    .form__actionlist {
+      visibility: visible;
+    }
+    .form__selectedlabel {
+      display: inline-block;
+    }
+  }
+}
+
+.section-block {
+  border: 1px solid #ebebeb;
+  border-radius: 3px;
+}
+
+.section-block .source {
+  padding: 10px;
+}
+
+.section-block .meta {
+  background-color: #fafafa;
+  border-top: 1px solid #eaeefb;
+}
 </style>

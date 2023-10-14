@@ -11,11 +11,14 @@ export default createStore({
     addForm(state, formObj) {
       state.forms.push(formObj);
     },
-    deleteForm(state, formIndex) {
-      state.forms.splice(formIndex, 1);
+    deleteFormElement(state, { form, index }) {
+      form.splice(index, 1);
     },
     setActiveTabForFields(state, value) {
       state.activeTabForFields = value;
+    },
+    setactiveField(state, value) {
+      state.activeField = value;
     },
     // other mutations...
   },

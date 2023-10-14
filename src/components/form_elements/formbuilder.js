@@ -298,6 +298,23 @@ export const FormBuilder = {
         },
         sort: false,
         filter: ".is-disabled"
+      },
+      methods: {
+        deleteElement(index, form) {
+          this.$store.state.activeField = [];
+          this.$store.commit('updateActiveTabForFields', 'elements');
+          this.$delete(form, index);
+        },
+      
+        cloneElement(index, field, form) {
+          const cloned = _.cloneDeep(field); // clone deep lodash
+          form.splice(index, 0, cloned);
+        },
+      
+        editElementProperties(field) {
+          this.$store.state.activeField = field;
+          this.$store.commit('updateActiveTabForFields', 'properties');
+        }
       }
   
 };
