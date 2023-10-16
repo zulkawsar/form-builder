@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="common-layout">
     <el-container>
       <el-main class="el-main-left">
         <div class="wrapper--forms">
@@ -78,14 +78,15 @@
                               class="form__actionitem--move"
                             ></el-button>
                             <el-button-group class="ml-4">
-                              <el-button type="primary" round> Edit</el-button>
+                              <el-button type="primary" round> E</el-button>
                               <el-button
+                                size="mini"
                                 type="primary"
                                 round
                                 @click="
                                   deleteElement(index, eachFormObj.fields)
                                 "
-                                >Delete</el-button
+                                >D</el-button
                               >
                             </el-button-group>
 
@@ -122,7 +123,7 @@
         </div>
       </el-main>
 
-      <el-aside class="wrapper--sidebar" width="30%">
+      <el-aside class="wrapper--sidebar" width="200px">
         <el-tabs type="border-card" v-model="activeTabForFields">
           <el-tab-pane name="elements" label="Elements">
             <elements />
