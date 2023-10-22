@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "element-plus": "^2.4.0",
+    "lodash": "^4.17.21",
     "vue": "^3.3.4",
     "vue-lodash": "^2.0.2",
     "vuedraggable": "^4.1.0",

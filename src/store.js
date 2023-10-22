@@ -20,6 +20,9 @@ export default createStore({
     setactiveField(state, value) {
       state.activeField = value;
     },
+    deleteForm (state, formIndex){
+      state.forms.splice(formIndex, 1)
+    }
     // other mutations...
   },
   actions: {

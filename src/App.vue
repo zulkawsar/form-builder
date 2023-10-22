@@ -1,139 +1,147 @@
 <template>
-  <div>
-    <el-container>
-      <el-main class="el-main-left">
-        <div class="wrapper--forms">
-          <el-form>
-            <el-row>
-              <el-button
-                style="margin-bottom: 10px"
-                type="primary"
-                @click="addSection"
-              >
-                Add Section
-              </el-button>
-            </el-row>
-
-            <el-row v-if="forms.length === 0">
-              <div class="empty-section">Please add Sections</div>
-            </el-row>
-
-            <template
-              v-for="(eachFormObj, eachFormIndex) in forms"
-              :key="`div-${eachFormIndex}`"
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-8">
+        <form>
+          <row>
+            <button
+              class="btn btn-primary"
+              style="margin-bottom: 10px"
+              type="button"
+              @click="addSection"
             >
-              <div class="section-block">
-                <div class="source">
-                  <el-row>
-                    <el-col :span="18">
-                      <el-input
-                        placeholder="Please input section title"
-                        v-model="eachFormObj.title"
-                        style="width: 100%"
-                      ></el-input>
-                    </el-col>
-                    <el-col :span="6">
-                      <el-button
-                        type="danger"
-                        round
-                        style="float: right"
-                        @click="deleteSection(eachFormIndex, eachFormObj.title)"
-                      >
-                        Delete Section
-                      </el-button>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="meta">
-                  <el-row>
-                    <draggable
-                      :list="eachFormObj.fields"
-                      class="dragArea"
-                      :group="{ name: 'formbuilder', pull: false, put: true }"
-                      :sort="true"
-                      ghost-class="sortable__ghost"
-                    >
-                      <template #item="{ element, index }">
-                        <el-col
-                          class="form__group"
-                          v-bind="element"
-                          :span="12"
-                          :class="{ 'is--active': element === activeField }"
-                        >
-                          <span class="form__selectedlabel">{{
-                            element.fieldType
-                          }}</span>
-                          <div @click="editElementProperties(element)">
-                            <component
-                              :is="element.fieldType"
-                              :currentField="element"
-                              class="form__field"
-                            ></component>
-                          </div>
-                          <div class="form__actiongroup">
-                            <el-button
-                              circle
-                              size="mini"
-                              icon="el-icon-rank"
-                              class="form__actionitem--move"
-                            ></el-button>
-                            <el-button-group class="ml-4">
-                              <el-button type="primary" round> Edit</el-button>
-                              <el-button
-                                type="primary"
-                                round
-                                @click="
-                                  deleteElement(index, eachFormObj.fields)
-                                "
-                                >Delete</el-button
-                              >
-                            </el-button-group>
+              Add Section
+            </button>
+          </row>
 
-                            <el-button-group class="form__actionlist">
-                              <el-button
-                                size="mini"
-                                icon="el-icon-plus"
-                                @click="
-                                  cloneElement(
-                                    index,
-                                    element,
-                                    eachFormObj.fields
-                                  )
-                                "
-                                v-show="!element.isUnique"
-                              ></el-button>
-                              <el-button
-                                size="mini"
-                                icon="el-icon-delete"
-                                @click="
-                                  deleteElement(index, eachFormObj.fields)
-                                "
-                              ></el-button>
-                            </el-button-group>
-                          </div>
-                        </el-col>
-                      </template>
-                    </draggable>
-                  </el-row>
+          <row v-if="forms.length === 0">
+            <div class="empty-section">Please add Sections</div>
+          </row>
+
+          <template
+            v-for="(eachFormObj, eachFormIndex) in forms"
+            :key="`div-${eachFormIndex}`"
+          >
+            <div class="section-block">
+              <div class="source">
+                <div class="row">
+                  <div class="col-8">
+                    <input
+                      placeholder="Please input section title"
+                      v-model="eachFormObj.title"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-4">
+                    <button
+                      class="btn btn-danger"
+                      type="button"
+                      @click="deleteSection(eachFormIndex, eachFormObj.title)"
+                    >
+                      Delete Section
+                    </button>
+                  </div>
                 </div>
               </div>
-            </template>
-          </el-form>
-        </div>
-      </el-main>
-
-      <el-aside class="wrapper--sidebar" width="30%">
-        <el-tabs type="border-card" v-model="activeTabForFields">
-          <el-tab-pane name="elements" label="Elements">
+              <div class="meta">
+                <div class="row">
+                  <draggable
+                    :list="eachFormObj.fields"
+                    class="dragArea"
+                    :group="{ name: 'formbuilder', pull: false, put: true }"
+                    :sort="true"
+                    ghost-class="sortable__ghost"
+                  >
+                    <template #item="{ element, index }">
+                      <div
+                        class="col-6 form__group"
+                        v-bind="element"
+                        :class="{ 'is--active': element === activeField }"
+                      >
+                        <span class="form__selectedlabel">{{
+                          element.fieldType
+                        }}</span>
+                        <div @click="editElementProperties(element)">
+                          <component
+                            :is="element.fieldType"
+                            :currentField="element"
+                            class="form__field"
+                          ></component>
+                        </div>
+                        <div class="form__actiongroup">
+                          <div class="btn-group btn-group-sm" role="group">
+                            <button type="button" class="btn btn-danger">
+                              Edit
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-warning"
+                              @click="deleteElement(index, eachFormObj.fields)"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </draggable>
+                </div>
+              </div>
+            </div>
+          </template>
+        </form>
+      </div>
+      <div class="col-4">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="pills-home-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-home"
+              type="button"
+              role="tab"
+              aria-controls="pills-home"
+              aria-selected="true"
+            >
+              Elements
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="pills-profile-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#pills-profile"
+              type="button"
+              role="tab"
+              aria-controls="pills-profile"
+              aria-selected="false"
+            >
+              Properties
+            </button>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div
+            class="tab-pane fade show active"
+            id="pills-home"
+            role="tabpanel"
+            aria-labelledby="pills-home-tab"
+          >
             <elements />
-          </el-tab-pane>
-
-          <el-tab-pane name="properties" label="Properties">
+          </div>
+          <div
+            class="tab-pane fade"
+            id="pills-profile"
+            role="tabpanel"
+            aria-labelledby="pills-profile-tab"
+          >
             <properties></properties>
-          </el-tab-pane>
-        </el-tabs>
-      </el-aside>
-    </el-container>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -187,17 +195,7 @@ export default {
       this.$store.commit("addForm", formObj);
     },
     deleteSection(formIndex, formTitle) {
-      this.$confirm(
-        `Are you sure to delete the section ${formTitle}?`,
-        "Warning",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "warning",
-        }
-      ).then(() => {
-        this.$store.commit("deleteForm", formIndex);
-      });
+      this.$store.commit("deleteForm", formIndex);
     },
   },
 };
